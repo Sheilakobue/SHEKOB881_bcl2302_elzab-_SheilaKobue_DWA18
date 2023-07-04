@@ -1,20 +1,21 @@
-import React from "react"
-import ReactDOM from "react-dom/client"
+//import React from "react"
+//import ReactDOM from "react-dom"
 
-const navbar = (
-    <nav>
-        <h1>Bob's Bistro</h1>
-        <ul>
-            <li>Menu</li>
-            <li>About</li>
-            <li>Contact</li>
-        </ul>
-    </nav>
-)
-/**
- * 
- */
-const root = ReactDOM.createRoot(document.getElementById("root"))
-root.render(navbar)
 
-ReactDOM.createRoot(document.getElementById("root")).render(navbar)
+function WhyReact() {
+    return (
+        <div>
+            <img src="./react-logo.png" width="40px" />
+            <h1>Reasons why i learn react</h1>
+            <ol>
+                <li>Popularity</li>
+                <li>Reusability</li>
+                <li>Virtual DOM</li>
+                <li>One-Way Data Flow</li>
+                <li>Large and Active Community</li>
+            </ol>
+        </div>
+    )
+}
+
+ReactDOM.render(<WhyReact />, document.getElementById("root"))
