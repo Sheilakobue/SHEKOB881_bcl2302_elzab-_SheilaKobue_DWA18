@@ -1,23 +1,52 @@
 //import React from "react"
 //import ReactDOM from "react-dom"
+ 
 
+function Header() {
+    return (
+        <header>
+            <nav className="nav">
+                <img src="./react-logo.png" className="nav-logo" />
+                <ul className="nav-items">
+                    <li>Pricing</li>
+                    <li>About</li>
+                    <li>Contact</li>
+                </ul>
+            </nav>
+        </header>
+    )
+}
 
-function WhyReact() {
+function Footer() {
+    return (
+        <footer>
+            <small>© 2021 Ziroll development. All rights reserved.</small>
+        </footer>
+    )
+}
+
+function MainContent() {
     return (
         <div>
-            <img src="./react-logo.png" width="40px" />
-            <h1>Reasons why i learn react</h1>
+            <h1>Reasons I'm excited to learn React</h1>
             <ol>
-                <li>Was first released in 2013</li>
-                <li>Was originally created by Jordan Walke</li>
-                <li>Has maintained by Facebook</li>
-                <li>Is maintained by Facebook</li>
-                <li>Powers thousands of enterprise apps, including mobile apps</li>
+                <li>It's a popular library, so I'll be 
+                able to fit in with the cool kids!</li>
+                <li>I'm more likely to get a job as a developer
+                if I know React</li>
             </ol>
         </div>
     )
 }
 
-ReactDOM.render(<WhyReact />, document.getElementById("root"))
-ReactDOM.createRoot(document.getElementById("root")).render(navbar)
+function Page() {
+    return (
+        <div>
+            <Header />
+            <MainContent />
+            <Footer />
+        </div>
+    )
+}
 
+ReactDOM.render(<Page />, document.getElementById("root"))
