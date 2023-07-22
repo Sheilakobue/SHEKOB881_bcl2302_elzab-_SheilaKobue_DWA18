@@ -13,7 +13,7 @@ function card(){
         .then(response=>response.json())
         .then(data =>{
             console.log(data)
-
+  
             const mapData = data.map((dataMapping)=>{
                 return (<Card
                     key={dataMapping.id}
