@@ -1,0 +1,40 @@
+body{
+    background-color: #1a3666;
+
+}
+
+.card--image {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 6px;
+    max-height: 160px;
+}
+
+h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+p {
+    margin: 5px;
+    font-size: 12px;
+}
+
+.card:hover {
+  transform: translateY(-2px); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: scale(1.1);
+}
+
+.card {
+
+    transition: transform 0.2s ease;
+    background-color: #7595fe;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    margin: 2px;
+    box-shadow: 0 6px 8px rgba(202, 201, 203, 0.879);
+    height: 100%;
+}

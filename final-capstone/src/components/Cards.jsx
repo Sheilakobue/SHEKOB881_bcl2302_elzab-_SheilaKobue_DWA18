@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import './Card.css';
+import { useState, useEffect } from 'react';
+import './Cards.css';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
-export default function Card() {
+export default function Cards() {
   const [previews, setPreviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cardsToShow, setCardsToShow] = useState(8); // Initial number of cards to show
