@@ -12,6 +12,7 @@ const NavBar = () => {
   };
 
   return (
+    
     <AppBar position="static">
       <Toolbar>
 

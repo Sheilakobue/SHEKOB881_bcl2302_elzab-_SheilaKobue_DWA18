@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Cards.css';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -7,6 +7,7 @@ export default function Cards() {
   const [previews, setPreviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cardsToShow, setCardsToShow] = useState(8); // Initial number of cards to show
+  const [selectedCardId, setSelectedCardId] = useState(null);
 
   useEffect(() => {
     fetch('https://podcast-api.netlify.app/shows')
@@ -18,13 +19,17 @@ export default function Cards() {
       .catch((error) => console.error('Error fetching previews:', error));
   }, []);
 
-  //ShowMore
+  // ShowMore
   const handleShowMore = () => {
     setCardsToShow((prevCardsToShow) => prevCardsToShow + 8); // Show 8 more cards on each click
   };
 
   const handleShowLess = () => {
     setCardsToShow(8); // Reset to the initial number of cards to show
+  };
+
+  const handleViewDetails = (cardId) => {
+    setSelectedCardId(cardId);
   };
 
   if (loading) {
@@ -46,8 +51,18 @@ export default function Cards() {
               <p>Seasons: {preview.seasons}</p>
               <p>Last Updated: {preview.lastUpdated}</p>
               <p>Genres: {preview.genres.join(', ')}</p>
-              <p>{preview.description.substring(0, 150)}</p>
-              {/* Add link to view full details of the show */}
+              {selectedCardId === preview.id ? (
+                <>
+                  <p>{preview.description}</p>
+                  <Button variant="outlined" onClick={() => setSelectedCardId(null)}>
+                    Close
+                  </Button>
+                </>
+              ) : (
+                <Button className='viewDetails' variant="outlined" onClick={() => handleViewDetails(preview.id)}>
+                  View Details
+                </Button>
+              )}
             </div>
           </Grid>
         ))}
