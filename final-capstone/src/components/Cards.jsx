@@ -59,7 +59,7 @@ export default function Cards() {
                   </Button>
                 </>
               ) : (
-                <Button className='viewDetails' variant="outlined" onClick={() => handleViewDetails(preview.id)}>
+                <Button className="ViewButton" variant="outlined" onClick={() => handleViewDetails(preview.id)}>
                   View Details
                 </Button>
               )}

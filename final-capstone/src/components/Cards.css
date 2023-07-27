@@ -14,11 +14,13 @@ body{
 h3 {
     margin: 0;
     font-size: 18px;
+    color:#cad5e8;
 }
 
 p {
     margin: 5px;
-    font-size: 12px;
+    font-size: 14px;
+    color:#eaeef5
 }
 
 .card:hover {
@@ -30,11 +32,21 @@ p {
 .card {
 
     transition: transform 0.2s ease;
-    background-color: #9698a4;
+    background-color: #0f2444;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 2px;
     margin: 2px;
     box-shadow: 0 6px 8px rgba(202, 201, 203, 0.879);
     height: 100%;
+}
+
+/* styles for the ViewButton class */
+.ViewButton {
+    background-color: #1f4a78;
+    color: #ffffff;
+    padding: 8px 16px;
+    border: 2px solid #007bff;
+    border-radius: 4px;
+  
 }
