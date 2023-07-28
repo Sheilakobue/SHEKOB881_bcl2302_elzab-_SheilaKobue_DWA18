@@ -9,7 +9,7 @@ export default function Header() {
     setHoveredButton(buttonName);
   };
   return (
-    <AppBar position="static" color="default">
+    <AppBar position="fixed" color="default">
     <Toolbar>
         <Typography variant="h6" style={{ flexGrow: 1 }}>
           <img
@@ -23,8 +23,8 @@ export default function Header() {
         <Typography variant="h6" style={{ 
             flexGrow: 1,
             textAlign: 'center', 
-            color:"grey",  }}>
-          <h2>MMS Podcast</h2>
+            color:"blue"}}>
+          <h3>MMS Podcast</h3>
         </Typography>
 
         <IconButton 
