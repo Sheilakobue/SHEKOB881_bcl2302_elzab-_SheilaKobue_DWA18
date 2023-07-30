@@ -2,15 +2,15 @@
 import Header from './components/Header'
 import Cards from './components/Cards'
 import './index.css'
-import SignUpForm from './components/SignUpForm'
+import SignInButton from './components/SignUpForm'
 
 function App() {
   
       return(
         <div>
-          <Header/>
-          <Cards/>
-          <SignUpForm/>
+         <Header/>
+         <Cards/>
+          <SignInButton/>
             
         </div>
         
