@@ -1,0 +1,98 @@
+/* NavBar styles */
+.app-bar {
+  background-color: #fff;
+  /* Change the background color */
+}
+
+.logo {
+  height: 70px;
+  width: 90px;
+  margin-right: 5px;
+}
+
+.nav-title {
+  flex-grow: 1;
+  text-align: center;
+  color: blue;
+}
+
+/* Button styles */
+.nav-button {
+  color: #000;
+  /* Change the button color */
+}
+
+/* Hover styles */
+.nav-button:hover {
+  color: #1976d2;
+  /* Change the button color on hover */
+}
+
+/* HeroBanner styles */
+.hero-banner {
+  height: 400px;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.hero-text {
+  color: #000;
+  /* Change the text color */
+  margin-bottom: 20px;
+}
+
+.hero-button {
+  background-color: #1976d2;
+  /* Change the button background color */
+  color: #fff;
+  /* Change the button text color */
+}
+
+
+/* HomePage styles */
+
+.hero-banner-container {
+  height: 400px;
+  background: #121212;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.hero-banner-heading {
+  color: #ffffff;
+  font-size: px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.hero-banner-button {
+  color: #ffffff;
+  background-color: #1976d2;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.hero-banner-show {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.hero-banner-show img {
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+}
+
+.hero-banner-show-name {
+  color: #ffffff;
+  font-size: 20px;
+}
