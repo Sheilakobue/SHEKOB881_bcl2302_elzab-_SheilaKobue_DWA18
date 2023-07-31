@@ -31,7 +31,7 @@ p {
 }
 
 .card {
-
+  top: 28%;
   transition: transform 0.2s ease;
   background-color: #0f2444;
   border: 1px solid #ccc;

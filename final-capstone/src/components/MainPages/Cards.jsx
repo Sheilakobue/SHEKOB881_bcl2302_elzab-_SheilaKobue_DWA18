@@ -5,8 +5,9 @@ import Button from '@mui/material/Button';
 export default function Cards() {
   const [previews, setPreviews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [cardsToShow, setCardsToShow] = useState(8); // Initial number of cards to show
+  const [cardsToShow, setCardsToShow] = useState(8);
   const [selectedCardId, setSelectedCardId] = useState(null);
+  const [sortByAZ, setSortByAZ] = useState(true); // New state variable for sorting
 
   useEffect(() => {
     fetch('https://podcast-api.netlify.app/shows')
@@ -30,6 +31,18 @@ export default function Cards() {
   const handleViewDetails = (cardId) => {
     setSelectedCardId(cardId);
   };
+  const handleSortToggle = () => {
+    setSortByAZ((prevSortByAZ) => !prevSortByAZ); // Toggle the sorting order
+  };
+
+   // Sort the previews based on the sorting order
+  const sortedPreviews = previews.slice().sort((a, b) => {
+    if (sortByAZ) {
+      return a.title.localeCompare(b.title);
+    } else {
+      return b.title.localeCompare(a.title);
+    }
+  });
 
   if (loading) {
     return <div>Loading...</div>;
@@ -37,8 +50,12 @@ export default function Cards() {
 
   return (
     <>
+     <Button variant="outlined" onClick={handleSortToggle}>
+        Sort {sortByAZ ? 'Z-A' : 'A-Z'}
+      </Button>
+
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        {previews.slice(0, cardsToShow).map((preview) => (
+        {sortedPreviews.slice(0, cardsToShow).map((preview) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={preview.id}>
             <div className="card">
               <img

@@ -6,12 +6,13 @@ import logo from '../Images/logo.png';
 //import SignUpForm from './SignUpForm'
 
 
-export default function NavBar() {
+export default function NavBar(props) {
   const [hoveredButton, setHoveredButton] = useState('');
   const handleButtonHover = (buttonName) => {
     setHoveredButton(buttonName);
   };
   return (
+    <nav  className={props.darkMode ? "dark": ""}>
     <AppBar position="fixed" className="app-bar">
       <Toolbar>
         <Typography variant="h6">
@@ -21,6 +22,18 @@ export default function NavBar() {
         <Typography variant="h6" className="nav-title">
           <h3>MMS Podcast</h3>
         </Typography>
+         <div 
+                className="toggler" 
+            >
+                <p className="toggler--light">Light</p>
+                <div 
+                    className="toggler--slider"
+                    onClick={props.toggleDarkMode}
+                >
+                    <div className="toggler--slider--circle"></div>
+                </div>
+                <p className="toggler--dark">Dark</p>
+            </div>
 
         <IconButton
           color="inherit"
@@ -52,5 +65,6 @@ export default function NavBar() {
       </Toolbar>
     
     </AppBar>
+    </nav>
   );
 }
