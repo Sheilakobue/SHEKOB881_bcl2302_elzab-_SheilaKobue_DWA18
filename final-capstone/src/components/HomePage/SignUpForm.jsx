@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Button, TextField, Container } from '@mui/material';
+import './HomePage.css'; // Import the Styling.css file
 
 const SignUpForm = () => {
+  const [isVisible, setIsVisible] = useState(false); // State variable to control the visibility of the form
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -41,7 +43,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="xs" className="signup-form-container" isVisible={isVisible}>
       <TextField
         label="Email"
         type="email"
@@ -52,6 +54,7 @@ const SignUpForm = () => {
         variant="outlined"
         error={!!emailError}
         helperText={emailError}
+        className="signup-input"
       />
       <TextField
         label="Password"
@@ -63,12 +66,14 @@ const SignUpForm = () => {
         variant="outlined"
         error={!!passwordError}
         helperText={passwordError}
+        className="signup-input"
       />
       <Button
         variant="contained"
         color="primary"
         fullWidth
         onClick={handleSignUp}
+        className="signup-button"
       >
         Sign Up
       </Button>

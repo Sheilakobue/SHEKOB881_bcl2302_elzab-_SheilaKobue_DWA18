@@ -13,7 +13,7 @@
 .nav-title {
   flex-grow: 1;
   text-align: center;
-  color: blue;
+  color: rgb(236, 236, 241);
 }
 
 /* Button styles */
@@ -55,7 +55,7 @@
 /* HomePage styles */
 
 .hero-banner-container {
-  height: 400px;
+  height: fit-content;
   background: #121212;
   display: flex;
   align-items: center;
@@ -86,13 +86,30 @@
   margin-top: 20px;
 }
 
-.hero-banner-show img {
-  width: 100px;
-  height: 100px;
-  margin-right: 10px;
-}
 
 .hero-banner-show-name {
   color: #ffffff;
   font-size: 20px;
+}
+.ShowImages{
+
+    width: 300px;
+    height: 300px;
+    position: static;
+    
+}
+
+/* SignUpForm styles */
+.signup-form {
+  display: none;
+  /* Initially hide the form */
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+.signup-form.visible {
+  display: block;
+  /* Show the form when the "visible" class is applied */
 }

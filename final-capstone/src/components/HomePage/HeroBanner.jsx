@@ -34,7 +34,7 @@ const HeroBanner = () => {
         {mostWatchedShows.map((show) => (
           <Grid item key={show.id}>
             <div>
-              <img src={show.image} alt={show.name} style={{ width: '100px', height: '100px' }} />
+              <img className="ShowImages"src={show.image} alt={show.name} />
               <Typography variant="subtitle1" align="center">
                 {show.name}
               </Typography>

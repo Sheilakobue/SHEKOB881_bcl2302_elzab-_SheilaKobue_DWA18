@@ -1,22 +1,21 @@
-//import { useState } from 'react'
-//import Header from './components/Header'
-//import Cards from './components/Cards'
+//import { useState } from 'react';
 import './components/HomePage/HomePage.css'
-import SignInButton from './components/HomePage/SignInForm'
-import SignUpForm from './components/HomePage/SignUpForm'
 import NavBar from './components/HomePage/NavBar'
 import HeroBanner from './components/HomePage/HeroBanner'
-function App() {
-  
+//import SignUpForm from './components/HomePage/SignUpForm';
+
+export default function App() {
+
       return(
         <div>
-         <NavBar/>
+        <NavBar/>
          <HeroBanner/>
-         <SignUpForm/>
-          <SignInButton/>   
+
+         
+        
+            
         </div>
         
     )
 }
 
-export default App
