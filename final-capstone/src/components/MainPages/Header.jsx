@@ -7,7 +7,7 @@ export default function Header() {
   const [hoveredButton, setHoveredButton] = useState('');
 
   return (
-    <AppBar className="app-bar" style={{ background: 'transparent' }}>
+    <AppBar className="app-bar" >
       <Toolbar>
         <Typography variant="h6">
           <img className="logo" src={logo} alt="Logo" />
@@ -19,11 +19,12 @@ export default function Header() {
 
         {/* Sign Out Button */}
         <IconButton
+          className="nav-button"
           color="inherit"
           aria-label="Sign out"
           onMouseOver={() => setHoveredButton('SignOut')}
           onMouseOut={() => setHoveredButton('')}
-          className="nav-button"
+         
           style={{ color: hoveredButton === 'SignOut' && 'grey' }}
         >
           <Tooltip title="Sign Out" placement="bottom">

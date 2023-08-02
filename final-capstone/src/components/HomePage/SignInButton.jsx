@@ -2,11 +2,10 @@ import { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 
 
-const SignInButton = () => {
+const SignInButton = ({ isLoggedIn, setIsLoggedIn }) => {
   const [open, setOpen] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isSignedIn, setIsSignedIn] = useState(false);
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
   const [resetUsername, setResetUsername] = useState('');
 

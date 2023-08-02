@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 
 const SortContext = createContext()
 
-export function SortFunction(){
+export function SortBy(){
     return useContext(SortContext)
 }
 

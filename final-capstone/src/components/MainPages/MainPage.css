@@ -3,6 +3,11 @@ body {
   background-color: #1a3666;
 box-sizing: border-box;
 }
+/* Header*/
+.app-bar{
+  background: '#1a3666';
+  box-shadow: black;
+}
 
 .card--image {
   width: 100%;
@@ -47,6 +52,58 @@ p {
 
 .Card-Box{
   position:absolute;
-  top:15%;
+  top:12%;
+  margin: 15px;
+}
+
+.loading-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  color:#cad5e8;
+}
+/* GenreFilter.css */
+
+.genre-button {
+  margin: 5px;
+  color: #fff;
+  border-color: #fff;
+}
+
+.Sort-button{
+  margin: 5px;
+  color: #fff;
+  border-color: #fff;
+  background-color: none;
+}
+
+/* SortBy .css */
+.DropdownMenu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 20px;
+  /* Add some margin to create space between the filter and the cards */
+}
+
+.DropdownMenu {
+  margin-right: 10px;
   
+  /* Add some space between the select and input elements */
+}
+
+/*Search*/
+.SearchContainer {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.SearchIcon {
+  position: absolute;
+  right: 10px;
+  pointer-events: none;
+  color: #888;
 }
