@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Tooltip, Link } from '@mui/material';
+import { Toolbar, Typography, IconButton, Tooltip, Link } from '@mui/material';
 import { LockOpen, PersonAdd } from '@mui/icons-material';
 import logo from '../Images/logo.png';
 //import SignInButton from './SignInForm'
@@ -12,9 +12,7 @@ export default function NavBar(props) {
     setHoveredButton(buttonName);
   };
   return (
-    <nav  className={props.darkMode ? "dark": ""}>
-    <AppBar position="fixed" className="app-bar">
-      <Toolbar>
+         <Toolbar>
         <Typography variant="h6">
           <img className="logo" src={logo} alt="Logo" />
         </Typography>
@@ -22,19 +20,7 @@ export default function NavBar(props) {
         <Typography variant="h6" className="nav-title">
           <h3>MMS Podcast</h3>
         </Typography>
-         <div 
-                className="toggler" 
-            >
-                <p className="toggler--light">Light</p>
-                <div 
-                    className="toggler--slider"
-                    onClick={props.toggleDarkMode}
-                >
-                    <div className="toggler--slider--circle"></div>
-                </div>
-                <p className="toggler--dark">Dark</p>
-            </div>
-
+     
         <IconButton
           color="inherit"
           aria-label="Sign up"
@@ -64,7 +50,5 @@ export default function NavBar(props) {
         </IconButton>
       </Toolbar>
     
-    </AppBar>
-    </nav>
   );
 }

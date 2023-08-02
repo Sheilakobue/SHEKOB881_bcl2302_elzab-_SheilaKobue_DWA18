@@ -4,19 +4,16 @@ import './components/HomePage/HomePage.css'
 //import HeroBanner from './components/HomePage/HeroBanner'
 import Header from './components/MainPages/Header'
 import Cards from './components/MainPages/Cards'
-import './components/MainPages/MainPage.css'
+ import './components/MainPages/MainPage.css'
 //import SignUpForm from './components/HomePage/SignUpForm';
-
+//import SignInForm from './components/HomePage/SignInForm'
 export default function App() {
 
       return(
         <div>
-        <Header/>
+        <Header/> 
         <Cards/>
-
-         
-        
-            
+               
         </div>
         
     )
