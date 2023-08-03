@@ -1,257 +1,191 @@
-import React, { useState, useEffect } from 'react';
-import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import CircularProgress from '@mui/material/CircularProgress';
-import GenreFilter from './GenreFilter';
-import InfoIcon from '@mui/icons-material/Info';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'; // Import the "Show More" icon
-import ExpandLessIcon from '@mui/icons-material/ExpandLess'; // Import the "Show Less" icon
+import React, { useEffect, useState, Fragment } from 'react';
 import Fuse from 'fuse.js';
-
-const Cards = () => {
-  const [previews, setPreviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [cardsToShow, setCardsToShow] = useState(8);
-  const [selectedCardId, setSelectedCardId] = useState(null);
+import axios from 'axios';
+const Preview = () => {
+  const [previewData, setPreviewData] = useState([]);
+  const [showData, setShowData] = useState(null);
+  const [loadingPreview, setLoadingPreview] = useState(true);
+  const [loadingShow, setLoadingShow] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentEpisode, setCurrentEpisode] = useState(null);
+  const [favorites, setFavorites] = useState([]);
+  const [filteredPreviews, setFilteredPreviews] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('date');
+  const [selectedSeason, setSelectedSeason] = useState(null);
   const [selectedGenre, setSelectedGenre] = useState(null);
-  const [sortingOption, setSortingOption] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [showSeasonsPage, setShowSeasonsPage] = useState(false);
-  const [seasonData, setSeasonData] = useState(null);
-
+  const [filteredData, setFilteredData] = useState([]); // New state variable for filtered data
+  const [descriptionVisible, setDescriptionVisible] = useState(false); // State for description visibility
+  const genreTitleMapping = {
+    1: 'Personal Growth',
+    2: 'True Crime and Investigative Journalism',
+    3: 'History',
+    4: 'Comedy',
+    5: 'Entertainment',
+    6: 'Business',
+    7: 'Fiction',
+    8: 'News',
+    9: 'Kids and Family',
+  };
   useEffect(() => {
     fetch('https://podcast-api.netlify.app/shows')
       .then((response) => response.json())
       .then((data) => {
-        setPreviews(data);
-        setLoading(false);
+        setPreviewData(data);
+        setLoadingPreview(false);
       })
       .catch((error) => console.error('Error fetching previews:', error));
   }, []);
-
   const fetchShowDetails = async (showId) => {
     try {
-      const response = await fetch(`https://podcast-api.netlify.app/id/${showId}/seasons`);
-      const data = await response.json();
-      setSeasonData(data); // Store the seasons data for the specific show
-      setSelectedCardId(null); // Close the card details if open
-      setShowSeasonsPage(true); // Show the seasons page for the specific show
+      setLoadingShow(true);
+      const response = await axios.get(`https://podcast-api.netlify.app/id/${showId}`);
+      const data = response.data;
+      setShowData(data);
+      setSelectedSeason(null);
+      setLoadingShow(false);
     } catch (error) {
       console.error('Error fetching show details:', error);
+      setLoadingShow(false);
     }
   };
-
-  const genreNames = ['Action', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Sci-Fi'];
-
-  const handleViewDetails = (cardId) => {
-    setSelectedCardId((prevSelectedCardId) => (prevSelectedCardId === cardId ? null : cardId));
+  const handleShowClick = (showId) => {
+    fetchShowDetails(showId);
   };
-
-  const handleGenreChange = (genre) => {
-    setSelectedGenre(genre);
-    setSortingOption(null);
+  const handleSeasonClick = (seasonNumber) => {
+    setSelectedSeason(seasonNumber);
   };
-
-  const handleSortingOptionChange = (option) => {
-    setSortingOption(option);
-    setSelectedGenre(null);
-  };
-
-  const handleSearch = (event) => {
-    const newSearchTerm = event.target.value;
-    setSearchTerm(newSearchTerm);
-    setSelectedGenre(null);
-    setSortingOption(null);
-  };
-    //ShowMore
-  const handleShowMore = () => {
-    setCardsToShow((prevCardsToShow) => prevCardsToShow + 8); // Show 8 more cards on each click
-  };
-  const handleShowLess = () => {
-    setCardsToShow(8); // Reset to the initial number of cards to show
-  };
-
-  const handleShowSeasonsPage = async (showId) => {
-    try {
-      const response = await fetch(`https://podcast-api.netlify.app/id/${showId}/seasons`);
-      const data = await response.json();
-      setSeasonData(data); // Store the seasons data for the specific show
-      setSelectedCardId(null); // Close the card details if open
-      setShowSeasonsPage(true); // Show the seasons page for the specific show
-    } catch (error) {
-      console.error('Error fetching show details:', error);
+  useEffect(() => {
+    filterPreviews();
+  }, [searchQuery, sortBy, previewData, selectedGenre]); // Update dependencies
+  const filterPreviews = () => {
+    let filteredPreviews = [...previewData];
+    // Filter by title
+    if (searchQuery) {
+      const fuse = new Fuse(filteredPreviews, { keys: ['title'] });
+      filteredPreviews = fuse.search(searchQuery).map((result) => result.item);
     }
-  };
-
-  const fuseOptions = {
-    keys: ['title'],
-    threshold: 0.3,
-  };
-
-  const fuse = new Fuse(previews, fuseOptions);
-  const fuzzySearchResults = searchTerm ? fuse.search(searchTerm) : previews;
-
-  const filteredPreviews = selectedGenre
-    ? fuzzySearchResults.filter((show) => show.genres.includes(genreNames.indexOf(selectedGenre) + 1))
-    : fuzzySearchResults;
-
-  const sortedPreviews = (() => {
-    switch (sortingOption) {
-      case 'title-asc':
-        return filteredPreviews.slice().sort((a, b) => a.title.localeCompare(b.title));
-      case 'title-desc':
-        return filteredPreviews.slice().sort((a, b) => b.title.localeCompare(a.title));
-      case 'date-asc':
-        return filteredPreviews
-          .slice()
-          .sort((a, b) => new Date(a.lastUpdated).getTime() - new Date(b.lastUpdated).getTime());
-      case 'date-desc':
-        return filteredPreviews
-          .slice()
-          .sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime());
-      default:
-        return filteredPreviews;
+    // Filter by genre (assuming you have selectedGenre as a state variable)
+    if (selectedGenre) {
+      filteredPreviews = filteredPreviews.filter((preview) =>
+        preview.genres.includes(parseInt(selectedGenre))
+      );
     }
-  })();
-
-  const previewsToDisplay = sortedPreviews.slice(0, cardsToShow);
-
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <CircularProgress size={60} />
-        <h2>Loading...</h2>
-      </div>
-    );
+    // Sort the previews based on sortBy
+    if (sortBy === 'title') {
+      filteredPreviews.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortBy === 'title-az') {
+      filteredPreviews.sort((a, b) => b.title.localeCompare(a.title));
+    } else if (sortBy === 'seasons') {
+      filteredPreviews.sort((a, b) => a.seasons - b.seasons);
+    } else if (sortBy === 'date') {
+      filteredPreviews.sort((a, b) => new Date(a.date) - new Date(b.date));
+    }
+    setFilteredPreviews(filteredPreviews);
+  };
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+  };
+  if (loadingPreview) {
+    return <div>Loading...</div>;
   }
-
-  if (showSeasonsPage) {
+  if (!showData) {
     return (
-      <div>
-        <h2>Seasons Page or Side</h2>
-        <IconButton
-          variant="outlined"
-          onClick={() => setShowSeasonsPage(false)}
-          style={{ backgroundColor: 'lightblue', color: 'darkblue' }}
-          size="small"
-        >
-          Back to Cards
-        </IconButton>
-
-        {/* Display the seasons data for the specific show */}
-        {seasonData &&
-          seasonData.map((season) => (
-            <div key={season.id}>
-              <h3>Season {season.number}</h3>
-              <p>Episodes: {season.episodes}</p>
-              <p>Release Date: {season.releaseDate}</p>
-            </div>
-          ))}
-      </div>
-    );
-  }
-
-  return (
-    <div className="Card-Box">
-      <GenreFilter
-        genres={genreNames}
-        selectedGenre={selectedGenre}
-        onGenreChange={handleGenreChange}
-      />
-
-      {/* Combined dropdown for sorting and search */}
-      <div className="DropdownMenu">
-        <select
-          value={sortingOption || ''}
-          onChange={(e) => handleSortingOptionChange(e.target.value)}
-        >
-          <option value="">Sort By</option>
-          <option value="title-asc">Title A-Z</option>
-          <option value="title-desc">Title Z-A</option>
-          <option value="date-asc">Date Ascending</option>
-          <option value="date-desc">Date Descending</option>
-        </select>
+      <div className="podcast-data-container">
+        {/* Search input */}
         <input
           type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
           placeholder="Search by title..."
-          value={searchTerm}
-          onChange={handleSearch}
         />
+        <div>
+          <h3>Filter by Genre:</h3>
+          <select value={selectedGenre} onChange={(e) => setSelectedGenre(e.target.value)}>
+            <option value="">All Genres</option>
+            {Object.entries(genreTitleMapping).map(([genreId, genreTitle]) => (
+              <option key={genreId} value={genreId}>
+                {genreTitle}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* Sort select */}
+        <select value={sortBy} onChange={handleSortChange}>
+        <option value="choose">Choose</option>
+          <option value="date">Sort by Date (A-Z)</option>
+          <option value="date">Sort by Date (Z-A)</option>
+          <option value="title">Sort by Title (A-Z)</option>
+          <option value="title-az">Sort by Title (Z-A)</option>
+        </select>
+        {/* Header Component */}
+        <ul className="prev">
+          {filteredPreviews.map((show) => (
+            <li key={show.id} className="preview-item">
+              <div className="image">
+                <img src={show.image} alt={show.title} className="preview-image" />
+                <div className="dots">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
+              <div className="infos">
+                <h3>Title: {show.title}</h3>
+                Genre: {show.genres.map((genreId) => genreTitleMapping[genreId]).join(',')}
+                <p>Seasons: {show.seasons}</p>
+                {/* Toggle description visibility */}
+                {descriptionVisible && <p>Description: {show.description}</p>}
+                Last Updated: {show.updated}
+              </div>
+              <div className='buto'>
+                <button onClick={() => handleShowClick(show.id)}>Seasons</button>
+                {/* Toggle description visibility on button click */}
+                <button onClick={() => setDescriptionVisible(!descriptionVisible)}>
+                  {descriptionVisible ? 'Hide Description' : 'Show Description'}
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
-
-      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        {previewsToDisplay.map((show) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={show.id}>
-            <div className="card">
-              <img src={show.image} className="card--image" alt={`Preview of ${show.title}`} />
-              <h3>{show.title}</h3>
-              <p>Seasons: {show.seasons}</p>
-              <p>Last Updated: {show.lastUpdated}</p>
-              <p>Genres: {show.genres.map((genreNumber) => genreNames[genreNumber - 1]).join(', ')}</p>
-
-              {selectedCardId === show.id && (
-                <div>
-                  <p>{show.description}</p>
-                  <IconButton
-                    variant="outlined"
-                    onClick={() => handleViewDetails(null)}
-                    style={{ backgroundColor: 'lightblue', color: 'darkblue' }}
-                    size="small"
-                  >
-                    Close
-                  </IconButton>
-                </div>
-              )}
-              {!selectedCardId && (
-                <div>
-                  <IconButton
-                    className="ViewButton"
-                    onClick={() => handleViewDetails(show.id)}
-                    style={{ color: 'lightBlue' }}
-                  >
-                    <InfoIcon />
-                  </IconButton>
-
-                  {/* Pass the show.id to handleShowSeasonsPage */}
-                  <IconButton
-                                     variant="outlined"
-                    onClick={() => setShowSeasonsPage(true)}
-                    style={{ backgroundColor: 'lightblue', color: 'darkblue' }}
-                    size="small"
-                  >
-                    Seasons
-                  </IconButton>
-                </div>
-              )}
-            </div>
-          </Grid>
+    );
+  }
+  return (
+    <div className="seas-data-container">
+      <button onClick={() => setShowData(null)}>Back to Show List</button>
+      <div>
+        <h2>{showData.title}</h2>
+        {showData.seasons.map((season) => (
+          <div key={season.number}>
+            <h3>Season {season.number}</h3>
+            {selectedSeason === season.number ? (
+              <ul>
+                {season.episodes.map((episode) => (
+                  <Fragment key={episode.id}>
+                    <h4>{episode.name}</h4>
+                    <li>{episode.title}</li>
+                    <p>{episode.description}</p>
+                    <audio controls>
+                      <source src={episode.file} />
+                    </audio>
+                  </Fragment>
+                ))}
+              </ul>
+            ) : (
+              <div>
+                <img className="seas" src={season.image} alt={`Season ${season.number}`} />
+                <div>{season.episodes.length} Episodes</div>
+                <button onClick={() => handleSeasonClick(season.number)}>View Episodes</button>
+              </div>
+            )}
+          </div>
         ))}
-      </Grid>
-         {cardsToShow < previews.length && (
-        <IconButton
-          variant="contained"
-          onClick={handleShowMore}
-          style={{ backgroundColor: 'grey', color: 'darkblue' }}
-          size="small"
-        >
-          <ExpandMoreIcon /> 
-        </IconButton>
-      )}
-
-      {cardsToShow > 8 && (
-        <IconButton
-          variant="contained"
-          onClick={handleShowLess}
-          style={{ backgroundColor: 'grey', color: 'darkblue' }}
-          size="small"
-        >
-          <ExpandLessIcon /> 
-        </IconButton>
-      )}
-
-    
+      </div>
     </div>
   );
 };
-
-export default Cards;
+export default Preview;
