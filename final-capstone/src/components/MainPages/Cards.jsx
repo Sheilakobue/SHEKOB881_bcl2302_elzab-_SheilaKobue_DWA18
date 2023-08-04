@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import CircularProgress from '@mui/material/CircularProgress';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'; 
 import searchIcon from '../Images/magnifying-glass.png'
+import filterIcon from '../Images/filter.png'
 import Fuse from 'fuse.js';
 import axios from 'axios';
 import { Box } from '@mui/material';
@@ -129,9 +130,8 @@ const formatDate = (dateString) => {
   if (!showData) {
     return (
       <Box className="Box-container">
-      
-      <img src={searchIcon} alt="Search Icons" className='Icons' />
-    
+        <img src={searchIcon} alt="Search Icons" className="Icons" />
+
         {/* Search input */}
         <input
           type="text"
@@ -140,41 +140,45 @@ const formatDate = (dateString) => {
           placeholder="Search by title..."
         />
 
-  <div className="Card-Box">
-  <h3>Filter by Genre:</h3>
-  {Object.entries(genreTitleMapping).map(([genreId, genreTitle]) => (
-    <button
-      key={genreId}
-      onClick={() => handleGenreClick(parseInt(genreId))}
-      style={{
-        backgroundColor: selectedGenre === parseInt(genreId) ? 'blue' : 'lightblue',
-        color: selectedGenre === parseInt(genreId) ? 'white' : 'black',
-        border: '1px solid blue',
-        padding: '5px',
-        margin: '2px',
-        cursor: 'pointer',
-      }}
-    >
-      {genreTitle}
-    </button>
-  ))}
-  <button className='Genre-Buttons'
-    onClick={() => setSelectedGenre(null)}
-    style={{
-      backgroundColor: selectedGenre === null ? 'blue' : 'lightblue',
-      color: selectedGenre === null ? 'white' : 'black',
-      border: '1px solid black',
-      padding: '5px',
-      margin: '2px',
-      cursor: 'pointer',
-    }}
-  >
-    All Genres
-  </button>
-</div>
+        <div className="Card-Box">
+          <img src={filterIcon} alt="Search Icons" className="Icons" />
+          <h3>Filter by Genre:</h3>
+
+          {Object.entries(genreTitleMapping).map(([genreId, genreTitle]) => (
+            <button
+              key={genreId}
+              onClick={() => handleGenreClick(parseInt(genreId))}
+              style={{
+                backgroundColor:
+                  selectedGenre === parseInt(genreId) ? "blue" : "lightblue",
+                color: selectedGenre === parseInt(genreId) ? "white" : "black",
+                border: "1px solid blue",
+                padding: "5px",
+                margin: "2px",
+                cursor: "pointer",
+              }}
+            >
+              {genreTitle}
+            </button>
+          ))}
+          <button
+            className="Genre-Buttons"
+            onClick={() => setSelectedGenre(null)}
+            style={{
+              backgroundColor: selectedGenre === null ? "blue" : "lightblue",
+              color: selectedGenre === null ? "white" : "black",
+              border: "1px solid black",
+              padding: "5px",
+              margin: "2px",
+              cursor: "pointer",
+            }}
+          >
+            All Genres
+          </button>
+        </div>
 
         {/* Sort select */}
-        <select className='Sort-By' value={sortBy} onChange={handleSortChange}>
+        <select className="Sort-By" value={sortBy} onChange={handleSortChange}>
           <option value="choose">Choose</option>
           <option value="date">Sort by Date (A-Z)</option>
           <option value="date">Sort by Date (Z-A)</option>
@@ -189,47 +193,61 @@ const formatDate = (dateString) => {
               <Grid item xs={12} sm={6} md={4} key={show.id}>
                 <div className="preview-item">
                   <div className="card--image">
-                    <img src={show.image} alt={show.title} className="preview-image" />
+                    <img
+                      src={show.image}
+                      alt={show.title}
+                      className="preview-image"
+                    />
                   </div>
 
                   <div className="info">
                     <h3>Title: {show.title}</h3>
-                    <p>Genre: {show.genres.map((genreId) => genreTitleMapping[genreId]).join(',')}</p>
+                    <p>
+                      Genre:{" "}
+                      {show.genres
+                        .map((genreId) => genreTitleMapping[genreId])
+                        .join(",")}
+                    </p>
                     <p>Seasons: {show.seasons}</p>
                     {/* Toggle description visibility */}
-                    {descriptionVisible && <p>Description: {show.description}</p>}
+                    {descriptionVisible && (
+                      <p>Description: {show.description}</p>
+                    )}
                     <p>Last Updated:{formatDate(show.updated)} </p>
                   </div>
 
-                  <div className='buttons'>
-                    <button 
-                    style={{
-                    backgroundColor:  'lightblue',
-                    color:'darkblue',
-                    border: '1px solid blue',
-                    padding: '5px',
-                    margin: '2px',
-                    cursor: 'pointer',
-                        }}
-                    onClick={() => handleShowClick(show.id)}>Seasons
+                  <div className="buttons">
+                    <button
+                      style={{
+                        backgroundColor: "lightblue",
+                        color: "darkblue",
+                        border: "1px solid blue",
+                        padding: "5px",
+                        margin: "2px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleShowClick(show.id)}
+                    >
+                      Seasons
                     </button>
                     {/* Toggle description visibility on button click */}
 
-                    <button 
-                     style={{
-                    backgroundColor:  'lightblue',
-                    color:'darkblue',
-                    border: '1px solid blue',
-                    padding: '5px',
-                    margin: '2px',
-                    cursor: 'pointer',
-                        }}
-                    onClick={() => setDescriptionVisible(!descriptionVisible)}>
-                      {descriptionVisible ? 'Hide Description' : 'Show Description'}
-
+                    <button
+                      style={{
+                        backgroundColor: "lightblue",
+                        color: "darkblue",
+                        border: "1px solid blue",
+                        padding: "5px",
+                        margin: "2px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => setDescriptionVisible(!descriptionVisible)}
+                    >
+                      {descriptionVisible
+                        ? "Hide Description"
+                        : "Show Description"}
                     </button>
                   </div>
-                  
                 </div>
               </Grid>
             ))}
