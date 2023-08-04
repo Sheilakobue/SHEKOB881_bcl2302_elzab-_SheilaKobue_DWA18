@@ -1,10 +1,18 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import { useEffect, useState, Fragment } from 'react';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import CircularProgress from '@mui/material/CircularProgress';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Import the ArrowBack icon
+//import GenreFilter from './GenreFilter';
+//import InfoIcon from '@mui/icons-material/Info';
+//import ExpandMoreIcon from '@mui/icons-material/ExpandMore'; // Replace this with the appropriate icon
 import Fuse from 'fuse.js';
 import axios from 'axios';
-const Preview = () => {
+
+const Cards = () => {
   const [previewData, setPreviewData] = useState([]);
   const [showData, setShowData] = useState(null);
-  const [loadingPreview, setLoadingPreview] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [loadingShow, setLoadingShow] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentEpisode, setCurrentEpisode] = useState(null);
@@ -16,6 +24,9 @@ const Preview = () => {
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [filteredData, setFilteredData] = useState([]); // New state variable for filtered data
   const [descriptionVisible, setDescriptionVisible] = useState(false); // State for description visibility
+  const [backIconLabel, setBackIconLabel] = useState('Back to Show List');
+
+
   const genreTitleMapping = {
     1: 'Personal Growth',
     2: 'True Crime and Investigative Journalism',
@@ -27,39 +38,50 @@ const Preview = () => {
     8: 'News',
     9: 'Kids and Family',
   };
+
   useEffect(() => {
+     setLoading(true);
     fetch('https://podcast-api.netlify.app/shows')
       .then((response) => response.json())
       .then((data) => {
         setPreviewData(data);
-        setLoadingPreview(false);
+        setLoading(false);
       })
       .catch((error) => console.error('Error fetching previews:', error));
   }, []);
+
   const fetchShowDetails = async (showId) => {
     try {
-      setLoadingShow(true);
+      setLoading(true);
       const response = await axios.get(`https://podcast-api.netlify.app/id/${showId}`);
       const data = response.data;
       setShowData(data);
       setSelectedSeason(null);
-      setLoadingShow(false);
+      setLoading(false);
+      
     } catch (error) {
       console.error('Error fetching show details:', error);
-      setLoadingShow(false);
+      
     }
   };
+
   const handleShowClick = (showId) => {
     fetchShowDetails(showId);
   };
+const handleGenreClick = (genreId) => {
+  setSelectedGenre(genreId === selectedGenre ? null : genreId);
+};
   const handleSeasonClick = (seasonNumber) => {
     setSelectedSeason(seasonNumber);
   };
+
   useEffect(() => {
     filterPreviews();
   }, [searchQuery, sortBy, previewData, selectedGenre]); // Update dependencies
+
   const filterPreviews = () => {
     let filteredPreviews = [...previewData];
+
     // Filter by title
     if (searchQuery) {
       const fuse = new Fuse(filteredPreviews, { keys: ['title'] });
@@ -83,18 +105,35 @@ const Preview = () => {
     }
     setFilteredPreviews(filteredPreviews);
   };
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
+
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
   };
-  if (loadingPreview) {
-    return <div>Loading...</div>;
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <CircularProgress size={60} />
+        <h2>Loading...</h2>
+      </div>
+    );
   }
+const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   if (!showData) {
     return (
-      <div className="podcast-data-container">
+      <div className="main-container">
+      <a href="https://www.flaticon.com/free-icons/search" title="search icons" target="_blank" rel="noopener noreferrer">
+      <img src="../Images/magnifying-glass.png" alt="Search Icons" />
+    
+    </a>
         {/* Search input */}
         <input
           type="text"
@@ -102,62 +141,116 @@ const Preview = () => {
           onChange={handleSearchChange}
           placeholder="Search by title..."
         />
-        <div>
-          <h3>Filter by Genre:</h3>
-          <select value={selectedGenre} onChange={(e) => setSelectedGenre(e.target.value)}>
-            <option value="">All Genres</option>
-            {Object.entries(genreTitleMapping).map(([genreId, genreTitle]) => (
-              <option key={genreId} value={genreId}>
-                {genreTitle}
-              </option>
-            ))}
-          </select>
-        </div>
+
+  <div className="Card-Box">
+  <h3>Filter by Genre:</h3>
+  {Object.entries(genreTitleMapping).map(([genreId, genreTitle]) => (
+    <button
+      key={genreId}
+      onClick={() => handleGenreClick(parseInt(genreId))}
+      style={{
+        backgroundColor: selectedGenre === parseInt(genreId) ? 'blue' : 'lightblue',
+        color: selectedGenre === parseInt(genreId) ? 'white' : 'black',
+        border: '1px solid blue',
+        padding: '5px',
+        margin: '2px',
+        cursor: 'pointer',
+      }}
+    >
+      {genreTitle}
+    </button>
+  ))}
+  <button className='Genre-Buttons'
+    onClick={() => setSelectedGenre(null)}
+    style={{
+      backgroundColor: selectedGenre === null ? 'blue' : 'lightblue',
+      color: selectedGenre === null ? 'white' : 'black',
+      border: '1px solid black',
+      padding: '5px',
+      margin: '2px',
+      cursor: 'pointer',
+    }}
+  >
+    All Genres
+  </button>
+</div>
+
         {/* Sort select */}
-        <select value={sortBy} onChange={handleSortChange}>
-        <option value="choose">Choose</option>
+        <select className='Sort-By' value={sortBy} onChange={handleSortChange}>
+          <option value="choose">Choose</option>
           <option value="date">Sort by Date (A-Z)</option>
           <option value="date">Sort by Date (Z-A)</option>
           <option value="title">Sort by Title (A-Z)</option>
           <option value="title-az">Sort by Title (Z-A)</option>
         </select>
+
         {/* Header Component */}
-        <ul className="prev">
-          {filteredPreviews.map((show) => (
-            <li key={show.id} className="preview-item">
-              <div className="image">
-                <img src={show.image} alt={show.title} className="preview-image" />
-                <div className="dots">
-                  <div></div>
-                  <div></div>
-                  <div></div>
+        <div className="card-box">
+          <Grid container spacing={3}>
+            {filteredPreviews.map((show) => (
+              <Grid item xs={12} sm={6} md={4} key={show.id}>
+                <div className="preview-item">
+                  <div className="card--image">
+                    <img src={show.image} alt={show.title} className="preview-image" />
+                  </div>
+
+                  <div className="info">
+                    <h3>Title: {show.title}</h3>
+                    <p>Genre: {show.genres.map((genreId) => genreTitleMapping[genreId]).join(',')}</p>
+                    <p>Seasons: {show.seasons}</p>
+                    {/* Toggle description visibility */}
+                    {descriptionVisible && <p>Description: {show.description}</p>}
+                    <p>Last Updated:{formatDate(show.updated)} </p>
+                  </div>
+
+                  <div className='buttons'>
+                    <button 
+                    style={{
+                    backgroundColor:  'lightblue',
+                    color:'darkblue',
+                    border: '1px solid blue',
+                    padding: '5px',
+                    margin: '2px',
+                    cursor: 'pointer',
+                        }}
+                    onClick={() => handleShowClick(show.id)}>Seasons
+                    </button>
+                    {/* Toggle description visibility on button click */}
+
+                    <button 
+                     style={{
+                    backgroundColor:  'lightblue',
+                    color:'darkblue',
+                    border: '1px solid blue',
+                    padding: '5px',
+                    margin: '2px',
+                    cursor: 'pointer',
+                        }}
+                    onClick={() => setDescriptionVisible(!descriptionVisible)}>
+                      {descriptionVisible ? 'Hide Description' : 'Show Description'}
+
+                    </button>
+                  </div>
+                  
                 </div>
-              </div>
-              <div className="infos">
-                <h3>Title: {show.title}</h3>
-                Genre: {show.genres.map((genreId) => genreTitleMapping[genreId]).join(',')}
-                <p>Seasons: {show.seasons}</p>
-                {/* Toggle description visibility */}
-                {descriptionVisible && <p>Description: {show.description}</p>}
-                Last Updated: {show.updated}
-              </div>
-              <div className='buto'>
-                <button onClick={() => handleShowClick(show.id)}>Seasons</button>
-                {/* Toggle description visibility on button click */}
-                <button onClick={() => setDescriptionVisible(!descriptionVisible)}>
-                  {descriptionVisible ? 'Hide Description' : 'Show Description'}
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       </div>
     );
   }
+
   return (
-    <div className="seas-data-container">
-      <button onClick={() => setShowData(null)}>Back to Show List</button>
-      <div>
+    <div className="season-container">
+      <IconButton
+          variant="outlined"
+          style={{ backgroundColor: 'lightblue', color: 'darkblue' }}
+          size="small"
+          onClick={() => setShowData(null)}>
+      <ArrowBackIcon />
+          </IconButton>
+      
         <h2>{showData.title}</h2>
         {showData.seasons.map((season) => (
           <div key={season.number}>
@@ -177,15 +270,19 @@ const Preview = () => {
               </ul>
             ) : (
               <div>
-                <img className="seas" src={season.image} alt={`Season ${season.number}`} />
-                <div>{season.episodes.length} Episodes</div>
+              
+                <img className="seasons" src={season.image} alt={`Season ${season.number}`} />
                 <button onClick={() => handleSeasonClick(season.number)}>View Episodes</button>
+                {season.episodes.length} Episodes
+                
+                
               </div>
             )}
           </div>
         ))}
       </div>
-    </div>
+    
   );
 };
-export default Preview;
+
+export default Cards;
