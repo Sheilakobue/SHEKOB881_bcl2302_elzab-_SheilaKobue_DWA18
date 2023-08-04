@@ -2,12 +2,11 @@ import { useEffect, useState, Fragment } from 'react';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import CircularProgress from '@mui/material/CircularProgress';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Import the ArrowBack icon
-//import GenreFilter from './GenreFilter';
-//import InfoIcon from '@mui/icons-material/Info';
-//import ExpandMoreIcon from '@mui/icons-material/ExpandMore'; // Replace this with the appropriate icon
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'; 
+import searchIcon from '../Images/magnifying-glass.png'
 import Fuse from 'fuse.js';
 import axios from 'axios';
+import { Box } from '@mui/material';
 
 const Cards = () => {
   const [previewData, setPreviewData] = useState([]);
@@ -93,7 +92,7 @@ const handleGenreClick = (genreId) => {
         preview.genres.includes(parseInt(selectedGenre))
       );
     }
-    // Sort the previews based on sortBy
+        // Sort the previews based on sortBy
     if (sortBy === 'title') {
       filteredPreviews.sort((a, b) => a.title.localeCompare(b.title));
     } else if (sortBy === 'title-az') {
@@ -110,7 +109,7 @@ const handleGenreClick = (genreId) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleSortChange = (e) => {
+   const handleSortChange = (e) => {
     setSortBy(e.target.value);
   };
 
@@ -129,11 +128,10 @@ const formatDate = (dateString) => {
 
   if (!showData) {
     return (
-      <div className="main-container">
-      <a href="https://www.flaticon.com/free-icons/search" title="search icons" target="_blank" rel="noopener noreferrer">
-      <img src="../Images/magnifying-glass.png" alt="Search Icons" />
+      <Box className="Box-container">
+      
+      <img src={searchIcon} alt="Search Icons" className='Icons' />
     
-    </a>
         {/* Search input */}
         <input
           type="text"
@@ -237,7 +235,7 @@ const formatDate = (dateString) => {
             ))}
           </Grid>
         </div>
-      </div>
+      </Box>
     );
   }
 

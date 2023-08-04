@@ -1,0 +1,36 @@
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-container {
+    display: flex;
+    padding-top: 9%;
+    
+    margin: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.show-info {
+    display: flex;
+}
+
+.show-info>div {
+    margin-right: 10px;
+}
+
+.arrow-icon {
+    position: absolute;
+    top: 80%;
+    transform: translateY(-80%);
+    cursor: pointer;
+    color:white;
+}
+
+.backward {
+    left: 10px;
+}
+
+.forward {
+    right: 10px;
+}

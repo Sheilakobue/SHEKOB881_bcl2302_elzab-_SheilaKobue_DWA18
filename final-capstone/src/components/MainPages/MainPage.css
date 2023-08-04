@@ -127,6 +127,7 @@ box-sizing: border-box;
 }
 .season-container{
   width: 250px;
+  
 }
 .loading-container {
   display: flex;
@@ -136,8 +137,9 @@ box-sizing: border-box;
   height: 100vh;
   
 }
-.main-container {
-  padding: 5px;
+.Box-container {
+  padding: 2dvb;
+  margin-top: 2px;
   
 }
 h3 {
@@ -164,3 +166,9 @@ p {
   border: darkblue;
   border-radius: 10px;
 }
+.Icons{
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    
+  }
