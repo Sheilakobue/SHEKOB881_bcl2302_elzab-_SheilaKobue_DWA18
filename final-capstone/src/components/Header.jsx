@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import { AppBar, Toolbar, Typography, IconButton, Tooltip } from '@mui/material';
 import { ExitToApp } from '@mui/icons-material';
-import logo from '../Images/logo.png';
+import logo from './Images/logo.png';
 
 export default function Header() {
   const [hoveredButton, setHoveredButton] = useState('');
 
+   const handleSignOut = () => {
+       alert("You have been signed out!");
+   };
+
   return (
-    <AppBar >
+    <AppBar>
       <Toolbar className="app-bar">
         <Typography variant="h6">
           <img className="logo" src={logo} alt="Logo" />
@@ -22,10 +26,11 @@ export default function Header() {
           className="nav-button"
           color="inherit"
           aria-label="Sign out"
-          onMouseOver={() => setHoveredButton('SignOut')}
-          onMouseOut={() => setHoveredButton('')}
-         
-          style={{ color: hoveredButton === 'SignOut' && 'blue' }}
+          onMouseOver={() => setHoveredButton("SignOut")}
+          onMouseOut={() => setHoveredButton("")}
+          style={{ color: hoveredButton === "SignOut" && "blue" }}
+          onClick={handleSignOut} 
+          
         >
           <Tooltip title="Sign Out" placement="bottom">
             <ExitToApp />

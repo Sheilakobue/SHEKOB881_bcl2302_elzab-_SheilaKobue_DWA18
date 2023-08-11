@@ -1,13 +1,12 @@
 import React, {useState} from 'react'
-import Header from "./components/MainPages/Header";
-import Cards from "./components/MainPages/Cards";
-import Carousel from "./components/MainPages/Carousel";
-import "./components/MainPages/MainPage.css";
-import "./Carousel.css";
-import { supabase } from "./components/MainPages/SupabaseClient";
-import SupabaseClient from "./components/MainPages/SupabaseClient";
+import Header from "./components/Header";
+import Cards from "./components/Cards";
+import Carousel from "./components/Carousel";
+import "./components/MainPage.css";
+import "./components/Carousel.css"
+import { supabase } from "./components/SupabaseClient";
+import SupabaseClient from "./components/SupabaseClient";
 
-//import SignInOut from './components/MainPages/SignInOut'
 
 export default function App() {
 const [throwSignUp, setThrowSignUp] = useState("signUpPhase");

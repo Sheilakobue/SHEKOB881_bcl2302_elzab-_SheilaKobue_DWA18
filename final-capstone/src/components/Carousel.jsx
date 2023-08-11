@@ -9,6 +9,9 @@ export default function Carousel() {
   const slideWidth = 200;
   const slidesToShow = 4;
   const containerWidth = slideWidth * shows.length;
+  const slideInterval = 5000; // Time in milliseconds for each slide
+  let interval;
+
   useEffect(() => {
     // Fetch data from the API when the component mounts
     axios
@@ -21,6 +24,17 @@ export default function Carousel() {
         console.error("Error fetching data:", error);
       });
   }, []);
+
+  useEffect(() => {
+    // Start the automatic sliding effect when the component mounts
+    interval = setInterval(() => moveCarousel(-1), slideInterval);
+
+    // Clean up the interval when the component unmounts
+    return () => {
+      clearInterval(interval);
+    };
+  }, []); // The empty dependency array ensures this effect runs only once on mount
+
   const moveCarousel = (steps) => {
     const newPosition = carouselPosition + steps * slideWidth * slidesToShow;
     setCarouselPosition(
@@ -30,18 +44,21 @@ export default function Carousel() {
       )
     );
   };
-  let interval;
+
   const handleBackwardMouseDown = () => {
     clearInterval(interval);
-    interval = setInterval(() => moveCarousel(1), 5000);
+    interval = setInterval(() => moveCarousel(1), slideInterval);
   };
+
   const handleForwardMouseDown = () => {
     clearInterval(interval);
-    interval = setInterval(() => moveCarousel(-1), 50);
+    interval = setInterval(() => moveCarousel(-1), slideInterval);
   };
+
   const handleMouseUp = () => {
     clearInterval(interval);
   };
+
   return (
     <div className="hero-section">
       <div className="carousel-container">
