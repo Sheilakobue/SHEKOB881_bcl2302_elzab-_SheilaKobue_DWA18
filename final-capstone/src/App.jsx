@@ -9,7 +9,7 @@ import SupabaseClient from "./components/SupabaseClient";
 
 
 export default function App() {
-const [throwSignUp, setThrowSignUp] = useState("signUpPhase");
+  const [throwSignUp, setThrowSignUp] = useState("signUpPhase");
 
   React.useEffect(() => {
     const authListener = supabase.auth.onAuthStateChange((event, session) => {
@@ -25,16 +25,14 @@ const [throwSignUp, setThrowSignUp] = useState("signUpPhase");
 
   return (
     <div>
-    {throwSignUp === 'signUpPhase' && <SupabaseClient />}
-      {throwSignUp === 'PreviewPhase' &&
-    <div>
-    
-      <Header />
-      <Carousel />
-      <Cards />
+      {throwSignUp === "signUpPhase" && <SupabaseClient />}
+      {throwSignUp === "PreviewPhase" && (
+        <div>
+          <Header />
+          <Carousel />
+          <Cards />
+        </div>
+      )}
     </div>
-  }
-
-  </div>
   );
 }

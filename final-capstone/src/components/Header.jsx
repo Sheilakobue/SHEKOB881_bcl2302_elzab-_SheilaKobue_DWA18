@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { AppBar, Toolbar, Typography, IconButton, Tooltip } from '@mui/material';
 import { ExitToApp } from '@mui/icons-material';
 import logo from './Images/logo.png';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 export default function Header() {
   const [hoveredButton, setHoveredButton] = useState('');
@@ -21,7 +22,23 @@ export default function Header() {
           MMS Podcast
         </Typography>
 
+        {/* Favorite Button */}
+        <IconButton
+          className="nav-button"
+          color="inherit"
+          aria-label="Favorite"
+          onMouseOver={() => setHoveredButton("Favorite")}
+          onMouseOut={() => setHoveredButton("")}
+          style={{ color: hoveredButton === "Favorite" && "blue" }}
+          onClick={handleSignOut}
+        >
+          <Tooltip title="favorite" placement="bottom">
+            <FavoriteIcon />
+          </Tooltip>
+        </IconButton>
+        
         {/* Sign Out Button */}
+
         <IconButton
           className="nav-button"
           color="inherit"
@@ -29,8 +46,7 @@ export default function Header() {
           onMouseOver={() => setHoveredButton("SignOut")}
           onMouseOut={() => setHoveredButton("")}
           style={{ color: hoveredButton === "SignOut" && "blue" }}
-          onClick={handleSignOut} 
-          
+          onClick={handleSignOut}
         >
           <Tooltip title="Sign Out" placement="bottom">
             <ExitToApp />
